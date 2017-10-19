@@ -1,0 +1,4 @@
+#Thu Oct 19 18:12:00 CST 2017
+base.0=/Users/wangjunfu/AndroidStudioProjects/android/Barrage/build/intermediates/transforms/dex/debug/folders/1000/5/slice_8
+renamed.0=classes.dex
+file.0=/Users/wangjunfu/AndroidStudioProjects/android/Barrage/build/intermediates/transforms/dex/debug/folders/1000/5/slice_8/classes.dex

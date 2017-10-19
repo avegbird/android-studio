@@ -1,0 +1,24 @@
+#Internal package file, do not edit.
+#Fri Oct 13 15:23:20 CST 2017
+2.base=/Users/wangjunfu/AndroidStudioProjects/android/Barrage/build/intermediates/res/resources-debug.ap_
+5.file=/Users/wangjunfu/AndroidStudioProjects/android/Barrage/build/intermediates/res/resources-debug.ap_/resources.arsc
+5.set=ANDROID_RESOURCE
+3.base=/Users/wangjunfu/AndroidStudioProjects/android/Barrage/build/intermediates/res/resources-debug.ap_
+6.file=/Users/wangjunfu/AndroidStudioProjects/android/Barrage/build/intermediates/res/resources-debug.ap_/res/menu/main.xml
+2.set=ANDROID_RESOURCE
+4.base=/Users/wangjunfu/AndroidStudioProjects/android/Barrage/build/intermediates/transforms/dex/debug/folders/1000/10000/instant-run-bootstrap_c13ba29aff2fcb6476b79dba22da0c5fb6a257cb
+count=7
+0.file=/Users/wangjunfu/AndroidStudioProjects/android/Barrage/build/intermediates/res/resources-debug.ap_/res/layout/activity_main.xml
+5.base=/Users/wangjunfu/AndroidStudioProjects/android/Barrage/build/intermediates/res/resources-debug.ap_
+4.set=DEX
+6.base=/Users/wangjunfu/AndroidStudioProjects/android/Barrage/build/intermediates/res/resources-debug.ap_
+1.file=/Users/wangjunfu/AndroidStudioProjects/android/Barrage/build/intermediates/transforms/dex/debug/folders/1000/10000/instant-run_5cdc0123d68aa8f91a955b929e53e4e05bdc3e1b/classes.dex
+1.set=DEX
+2.file=/Users/wangjunfu/AndroidStudioProjects/android/Barrage/build/intermediates/res/resources-debug.ap_/AndroidManifest.xml
+6.set=ANDROID_RESOURCE
+0.base=/Users/wangjunfu/AndroidStudioProjects/android/Barrage/build/intermediates/res/resources-debug.ap_
+3.file=/Users/wangjunfu/AndroidStudioProjects/android/Barrage/build/intermediates/res/resources-debug.ap_/res/drawable-xxhdpi-v4/ic_launcher.png
+3.set=ANDROID_RESOURCE
+1.base=/Users/wangjunfu/AndroidStudioProjects/android/Barrage/build/intermediates/transforms/dex/debug/folders/1000/10000/instant-run_5cdc0123d68aa8f91a955b929e53e4e05bdc3e1b
+4.file=/Users/wangjunfu/AndroidStudioProjects/android/Barrage/build/intermediates/transforms/dex/debug/folders/1000/10000/instant-run-bootstrap_c13ba29aff2fcb6476b79dba22da0c5fb6a257cb/classes.dex
+0.set=ANDROID_RESOURCE
