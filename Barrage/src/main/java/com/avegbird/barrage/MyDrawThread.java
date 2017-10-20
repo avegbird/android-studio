@@ -130,7 +130,7 @@ public class MyDrawThread extends Thread{
         if (taxtThemes == null)
             taxtThemes = new CopyOnWriteArrayList<TaxtTheme>();
         synchronized(taxtThemes){
-            taxtThemes.add(new TaxtTheme(text).setRollingType(TaxtTheme.ROLLING_KEEPING));
+            taxtThemes.add(new TaxtTheme(text).setRollingType(2));
         }
     }
 

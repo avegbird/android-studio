@@ -27,8 +27,8 @@ public class TaxtTheme {
     private int RollingType = 1;//弹幕滚动方式，1正常自右向左滚动，0不滚动，2，自左往右滚动
     private int TextPriority = 10;//弹幕显示优先级，默认同等优先级先来在下，高优先级MAX=99在最上面，最低优先级0在最下面
 
-    private int head_x = Integer.MAX_VALUE - 10000;//此条弹幕当前头X位置
-    private int head_y = 0;//此条弹幕当前头Y位置
+    private int head_x;//此条弹幕当前头X位置
+    private int head_y;//此条弹幕当前头Y位置
     private int text_length = 0;//弹幕长度
     private int text_heigh = 0;//弹幕高度
 
@@ -39,7 +39,7 @@ public class TaxtTheme {
             Text = text;
         }
         getTextSize();
-        head_x = Integer.MAX_VALUE - 10000;
+        head_x = Integer.MAX_VALUE;
         head_y = text_heigh + 200;
     }
     public int getTextFont() {
@@ -64,22 +64,22 @@ public class TaxtTheme {
                 }
                 break;
             case 1: //正常自右向左滚动
+                if (head_x == Integer.MAX_VALUE){
+                    head_x = width;
+                    Log.e(TAG,"head_x set to width"+head_x);
+                }
                 //查看是否可见
                 if (head_x + text_length <= 0){
                     Log.e(TAG,"textTheme destroy");
                     toDestroy();
                     break;
                 }
-                if (head_x >= Integer.MAX_VALUE-15000){
-                    head_x = width;
-                    Log.e(TAG,"head_x set to width"+head_x);
-                }
                 head_x = head_x - (move>1?move:1);
                 Log.e(TAG, "gomove="+head_x);
                 break;
             case 2: //自左往右滚动
                 //查看是否可见
-                if (head_x >= Integer.MAX_VALUE-15000){
+                if (head_x == Integer.MAX_VALUE){
                     head_x = 0 - text_length;
                     Log.e(TAG,"head_x set to zero"+head_x);
                 }
