@@ -16,27 +16,28 @@ public class BarrageSurfaceView extends SurfaceView implements SurfaceHolder.Cal
 	public static final String TAG = "BarrageSurfaceView";
 	public static final boolean D = true;
 	
-	private Context context = null;//ÉÏÏÂÎÄ£¬»ñÈ¡Ò»Ğ©È«¾Ö±äÁ¿ºÍÏµÍ³·şÎñ
-	private SurfaceHolder holder;//¿ØÖÆ¾ä±ú
-	private int speed = 3;//µ¯Ä»´æÔÚÆÁÄ»Ê±¼ä
-    private MyDrawThread randerTherad = null;
+	private Context context = null;//ä¸Šä¸‹æ–‡ï¼Œç”¨ä»¥è·å–å…¨å±€å˜é‡æˆ–è€…ç³»ç»ŸæœåŠ¡
+	private SurfaceHolder holder;//surfaceview å¥æŸ„ï¼Œå¯é—´æ¥æ§åˆ¶surfaceviewæ‰€æœ‰æ´»åŠ¨
+	private int speed = 3;//å¼¹å¹•åœ¨å±å¹•å­˜åœ¨æ—¶é—´ï¼Œæ§åˆ¶ç€å¼¹å¹•é€Ÿåº¦
+    private MyDrawThread randerTherad = null;//ç»˜å›¾çº¿ç¨‹ï¼Œæ‰®æ¼”ç€å¯¼æ¼”è§’è‰²ï¼Œæ§åˆ¶å¼¹å¹•åœ¨å±å¹•çš„æ˜¾ç¤º
 	
 	public BarrageSurfaceView(Context context) {
 		super(context);
 		this.context = context;
-		holder = this.getHolder();//»ñÈ¡¿ØÖÆ¾ä±ú
+		holder = this.getHolder();//è·å–surfaceview çš„æ§åˆ¶å¥æŸ„
 		holder.addCallback(this);
 	}
 
 	public MyDrawThread getRanderTherad(){return randerTherad;}
+
 	/**
-	 * surfaceview ±»´´½¨µÄÊ±ºòµ÷ÓÃ£¬ÀïÃæÔËĞĞÒ»Ğ©³õÊ¼»¯¹¤×÷
-	 * @param holder:¿ØÖÆ¾ä±ú
+	 * surfaceview surfaceviewåˆ›å»ºå®Œæˆæ—¶è°ƒç”¨ï¼Œä¸€èˆ¬ç”¨æ¥åˆå§‹åŒ–æ“ä½œ
+	 * @param holder:surfaceviewå¥æŸ„
 	 * */
 	@Override
 	public void surfaceCreated(SurfaceHolder holder) {
 		// TODO Auto-generated method stub
-		//ÉùÃ÷äÖÈ¾Ïß³Ì
+		//å¦‚æœç»˜å›¾çº¿ç¨‹ä¸ä¸ºç©ºï¼Œä¸ä½œæ“ä½œ
         if (randerTherad != null)
             return;
 		if (D) Log.e(TAG, "surface is created");
@@ -47,11 +48,11 @@ public class BarrageSurfaceView extends SurfaceView implements SurfaceHolder.Cal
 	}
 
 	/**
-	 * surfaceview ×´Ì¬·¢Éú¸Ä±äÊ±ºòµ÷ÓÃ£¬ÀïÃæ¿É»ñµÃµ±Ç°ÆÁÄ»¿í¸ßµÈ²ÎÊı
-	 * @param holder:¿ØÖÆ¾ä±ú
-	 * @param format:ÏñËØ¸ñÊ½
-	 * @param width:surfaceview ¿í¶È
-	 * @param height:surfaceview ¸ß¶È
+	 * surfaceview ç•Œé¢å‘ç”Ÿæ›´æ”¹æ—¶è°ƒç”¨
+	 * @param holder:surfaceviewå¥æŸ„
+	 * @param format:
+	 * @param width:surfaceview å®½åº¦
+	 * @param height:surfaceview é«˜åº¦
 	 * */
 	@Override
 	public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
@@ -60,8 +61,8 @@ public class BarrageSurfaceView extends SurfaceView implements SurfaceHolder.Cal
 	}
 
 	/**
-	 * surfaceview ±»Ïú»ÙÊ±ºòµ÷ÓÃ£¬ÀïÃæ¾­³£×öÒ»Ğ©ÊÍ·Å×ÊÔ´µÄ²Ù×÷
-	 * @param holder:¿ØÖÆ¾ä±ú
+	 * surfaceview é”€æ¯æ—¶è°ƒç”¨ï¼Œä¸€èˆ¬åœ¨æ­¤é‡Šæ”¾èµ„æº
+	 * @param holder:surfaceviewå¥æŸ„
 	 * */
 	@Override
 	public void surfaceDestroyed(SurfaceHolder holder) {
@@ -70,288 +71,4 @@ public class BarrageSurfaceView extends SurfaceView implements SurfaceHolder.Cal
             return;
         randerTherad.softstop();
 	}
-	
-	/**
-	 * Ö÷Òª¹¤×÷Àà
-	 * »æ»­Ïß³Ì
-	 * ÆäÖĞ°üº¬ÁË»­²¼´¦Àí£¬µ¯Ä»äÖÈ¾£¬»º´æ»­²¼äÖÈ¾µÈ²Ù×÷
-	 * */
-	public class MyDrawThread extends Thread{
-		private SurfaceHolder holder = null;//surfaceholderÊµÀı£¬ÓÃÀ´¿ØÖÆsurfaceview»æÖÆ
-		private CopyOnWriteArrayList<TaxtTheme> taxtThemes = null;//±£´æÎ´»æÖÆÍê³ÉºÍÎ´»æÖÆµÄtaxt£¨µ¯Ä»£©ÊµÀı
-		private int MaxFrame = 60;//×î´óË¢ĞÂÖ¡ÂÊ
-
-		private boolean is_run = true;//¿ØÖÆ´Ë»æÍ¼Ïß³ÌÊÇ·ñ´æ»î£¬ÓÖ³ÆÈíÍË³ö
-		private int showType = 1;//µ¯Ä»äÖÈ¾¹æÔò£¬1µ¯Ä»²»¸²¸ÇÏÔÊ¾£¬2µ¯Ä»¸²¸ÇÏÔÊ¾
-
-		private int[][] is_clean = null; //±£´æäÖÈ¾ĞĞĞÅÏ¢£¬¢Ù¾ö¶¨µÚNĞĞµÄµ¯Ä»ÊÇ·ñ¿É¼ÌĞøäÖÈ¾ÆäËûµ¯Ä»£»¢Ú±£´æäÖÈ¾ĞĞ¸ß¶È
-		private int width = 0;//ÆÁÄ»¿í¶È
-		private int heigth = 0;//ÆÁÄ»¸ß¶È
-        private int speed = 3;//µ¯Ä»ËÙ¶È
-		/**
-		 * ¹¹Ôì·½·¨
-		 * @param holder surfaceholderÊµÀı£¬ÓÃÀ´¿ØÖÆsurfaceview»æÖÆ
-		 * @param taxtThemes ±£´æÎ´»æÖÆÍê³ÉºÍÎ´»æÖÆµÄtaxt£¨µ¯Ä»£©ÊµÀı
-		 * */
-		public MyDrawThread(SurfaceHolder holder, CopyOnWriteArrayList<TaxtTheme> taxtThemes) {
-			this.holder = holder;
-			this.taxtThemes = taxtThemes;
-		}
-		
-		public MyDrawThread(SurfaceHolder holder) {
-			this(holder, null);
-		}
-
-		//»ñÈ¡ÆÁÄ»ĞÅÏ¢ºÍÈ«¾ÖĞÅÏ¢
-		public void setSurfaceMsg(int width, int height, int speed){
-			is_clean = new int[height/5][2];
-			this.width = width;
-			this.heigth = height;
-            this.speed = speed;
-			Log.e(TAG,"width="+width+" heigth="+height);
-		}
-		/**
-		 * Ïß³Ì±ØĞëÒªÊµÏÖµÄ·½·¨
-		 * ÓÃstart()À´Æô¶¯¸Ã·½·¨£¬´Ë·½·¨½«ÔËĞĞÔÚ¶ÀÁ¢Ïß³ÌÖĞ£¬²»»á×èÈûÖ÷Ïß³Ì 
-		 * */
-		@Override
-		public void run() {
-			Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
-			paint.setAntiAlias(true);
-			long last_time = System.currentTimeMillis();
-			if (D) Log.e(TAG,"draw thread is run");
-			while(is_run) {
-				long use_time = System.currentTimeMillis() - last_time;
-				if (1000/MaxFrame - use_time > 0)//±£Ö¤×î´óÖ¡ÂÊ
-				try {
-					Thread.sleep((1000/MaxFrame - use_time));
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
-				last_time = System.currentTimeMillis();
-				if (holder == null) {
-					continue;//Èç¹ûholderÎª¿Õ£¬ÔòÒ»Ö±µÈ´ı
-				}
-				if (taxtThemes == null || taxtThemes.size() < 1) {
-					continue;//Èç¹ûËùÓĞµ¯Ä»ÒÑ¾­»æÖÆÍê³É£¬µÈ´ıĞÂµÄµ¯Ä»½øÈë
-				}
-				synchronized (holder) {
-					Canvas lockCanvas = holder.lockCanvas();//»ñÈ¡surfaceview canvas
-					if (lockCanvas == null)
-						break;
-					lockCanvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR);//Çå¿Õ»­²¼
-					draw_cache_Canvas(lockCanvas,paint,use_time);
-					draw_per_frame(lockCanvas,paint,use_time);
-					holder.unlockCanvasAndPost(lockCanvas);
-				}
-			}
-		}
-		/**
-		 * »æÖÆÖ¡ÂÊ Ö»ÓĞÔÚdebugÊ±²Å»á¿ªÆô»æÖÆ
-		 * @param canvas: »­²¼
-		 * @param paint: »­±Ê
-		 * @param use_time:¸üĞÂÒ»Ö¡ËùÓÃµÄÊ±¼ä
-		 * */
-		private void draw_per_frame(Canvas canvas, Paint paint, long use_time){
-			if (!D) return;
-			double l = 1000.0 / (use_time>=1?use_time:1);
-			paint.setColor(Color.RED);
-			paint.setAlpha(255);
-			paint.setTextSize(75);
-			canvas.drawText(String.format("%.2f", l),width-230,100,paint);
-		}
-		/**
-		 * »æÖÆµ¯Ä»µ½»­²¼
-		 * */
-		private void draw_cache_Canvas(Canvas canvas, Paint paint,long use_time) {
-			synchronized (taxtThemes) {//±£Ö¤Ö»ÓĞ´Ë·½·¨µ¥¶À²Ù×÷ËùÓĞµ¯Ä»
-				for(TaxtTheme i : taxtThemes) {
-					if (i.is_destroy){//ÊÇ·ñµ¯Ä»ÒÑ¾­Ê§Ğ§
-						taxtThemes.remove(i);
-						i = null;
-						continue;
-					}
-					//Ñ­»·È¡µÃµ¥¸ötaxt¶ÔÏó
-					Log.e(TAG,"alpha="+i.getTextApth()+" font="+i.getTextFont()+" color="+i.getTextColor());
-					paint.setAlpha((int)(255*i.getTextApth()));//Ïò»­±ÊÉèÖÃÍ¸Ã÷¶È
-					paint.setTextSize(i.getTextFont());//ÉèÖÃ×ÖÌå
-					paint.setColor(i.getTextColor());//ÉèÖÃÑÕÉ«
-					Log.e(TAG,"text=" + i.getText() + " head_x=" + i.getHead_x() + " head_y=" + i.getHead_y());
-					canvas.drawText(i.getText(),i.getHead_x(),i.getHead_y(),paint);//»æÖÆµ¯Ä»
-					i.goMove(width,heigth,speed,use_time);//µ¯Ä»ÒÆ¶¯
-				}
-			}
-			return;
-		}
-		/**
-		 * Ìí¼Óµ¯Ä»
-		 * */
-		public void setBarrage(String text) {
-			if (taxtThemes == null)
-				taxtThemes = new CopyOnWriteArrayList<TaxtTheme>();
-			synchronized(taxtThemes){
-				taxtThemes.add(new TaxtTheme(text));
-			}
-		}
-
-		public void softstop(){is_run=false;}
-	}
-	/**
-	 * µ¯Ä»ĞÅÏ¢·â×°Ä£¿é
-	 * ×¢Òâ£¡Ôö¼ÓÒ»ÖÖ¹ö¶¯·½Ïò£¬¾ÍĞèÒªÔö¼ÓÒ»¸ö»­²¼
-	 * */
-	public class TaxtTheme {
-		private boolean is_destroy = false;//ÊÇ·ñÏú»Ù false²»Ïú»Ù£¬trueÏú»Ù
-		public static final int ROLLING_NORMAL = 1;//×ÔÓÒÏò×ó¹ö¶¯
-		public static final int ROLLING_RIGHT2LIFT = 2;//×Ô×óÏòÓÒ¹ö¶¯
-		public static final int ROLLING_KEEPING = 0;//²»¹ö¶¯£¬¾ÓÖĞÏÔÊ¾
-
-		private String Text = "";//Ëù·¢ÎÄ×Ö
-		private int TextFont = 70;//×ÖÌå´óĞ¡ ×îĞ¡Îª5
-		private int TextColor = Color.WHITE;//×ÖÌåÑÕÉ«
-		private float TextApth = 255;//Í¸Ã÷¶È 1²»Í¸Ã÷£¬0Í¸Ã÷
-		private int TextSpacing = 5;//¼ä¾àÄ¬ÈÏ¼ä¾àÎª5dxp
-		private int TextPosition = 0;//µ¯Ä»ÏÔÊ¾Î»ÖÃ£¬0Õû¸öÆÁÄ»£¬1ÆÁÄ»ÉÏÈı·ÖÖ®Ò»£¬2ÆÁÄ»ÖĞ¼äÈı·ÖÖ®Ò»£¬3ÆÁÄ»ÏÂÈı·ÖÖ®Ò»
-		private final int TextStayTime = 3000;//µ¯Ä»¹ö¶¯·½Ê½Îª0Ê±£¬ÔÚÆÁÄ»ÉÏÏÔÊ¾µÄÊ±¼ä
-		private long now_time = 0;//¼ÇÂ¼µ±Ç°Ê±¼ä
-		private int RollingType = 1;//µ¯Ä»¹ö¶¯·½Ê½£¬1Õı³£×ÔÓÒÏò×ó¹ö¶¯£¬0²»¹ö¶¯£¬2£¬×Ô×óÍùÓÒ¹ö¶¯
-		private int TextPriority = 10;//µ¯Ä»ÏÔÊ¾ÓÅÏÈ¼¶£¬Ä¬ÈÏÍ¬µÈÓÅÏÈ¼¶ÏÈÀ´ÔÚÏÂ£¬¸ßÓÅÏÈ¼¶MAX=99ÔÚ×îÉÏÃæ£¬×îµÍÓÅÏÈ¼¶0ÔÚ×îÏÂÃæ
-
-		private int head_x = Integer.MAX_VALUE - 10000;//´ËÌõµ¯Ä»µ±Ç°Í·XÎ»ÖÃ
-		private int head_y = 0;//´ËÌõµ¯Ä»µ±Ç°Í·YÎ»ÖÃ
-		private int text_length = 0;//µ¯Ä»³¤¶È
-		private int text_heigh = 0;//µ¯Ä»¸ß¶È
-		
-		public TaxtTheme(String text) {
-			if (text == null){
-				Text = "";
-			}else {
-				Text = text;
-			}
-			getTextSize();
-			head_x = Integer.MAX_VALUE - 10000;
-			head_y = text_heigh + 200;
-		}
-		public int getTextFont() {
-			return TextFont;
-		}
-		public void setTextFont(int textFont) {
-			if (textFont < 5)
-				textFont = 5;
-			TextFont = textFont;
-			getTextSize();
-		}
-		public void goMove(int width,int heigth, int speed,long use_time){
-			int move = (int) ((width+text_length)/(speed*1000.0/use_time));
-			switch (RollingType){
-				case 0: //²»¹ö¶¯
-					if (now_time == 0)
-						now_time = System.currentTimeMillis();
-					if (System.currentTimeMillis() - now_time >= TextStayTime){
-						toDestroy();
-						break;
-					}
-					break;
-				case 1: //Õı³£×ÔÓÒÏò×ó¹ö¶¯
-					//²é¿´ÊÇ·ñ¿É¼û
-					Log.e(TAG,"text_length="+text_length+" text_heigh="+text_heigh+" head_x + text_length="+head_x + text_length);
-					if (head_x + text_length <= 0){
-						Log.e(TAG,"textTheme destroy");
-						toDestroy();
-						break;
-					}
-					if (head_x >= Integer.MAX_VALUE-15000){
-						head_x = width;
-						Log.e(TAG,"head_x set to width"+head_x);
-					}
-					head_x = head_x - (move>1?move:1);
-					Log.e(TAG, "gomove="+head_x);
-					break;
-				case 2: //×Ô×óÍùÓÒ¹ö¶¯
-					//²é¿´ÊÇ·ñ¿É¼û
-					if (head_x - text_length >= width){
-						toDestroy();
-						break;
-					}
-					head_x = head_x + (move>1?move:1);
-					break;
-				default:
-
-			}
-		}
-		public void toDestroy(){
-			is_destroy = true;
-			now_time = 0;
-//			ÕâÀïÒÔºó¿ÉÒÔÎªÖØ¸´ÀûÓÃ×ö×¼±¸
-		}
-		public int getTextColor() {
-			return TextColor;
-		}
-		public void setTextColor(int textColor) {
-			TextColor = textColor;
-		}
-		public float getTextApth() {
-			return TextApth;
-		}
-		public void setTextApth(float textApth) {
-			TextApth = textApth;
-		}
-		public int getTextSpacing() {
-			return TextSpacing;
-		}
-		public void setTextSpacing(int textSpacing) {
-			TextSpacing = textSpacing;
-		}
-		public int getTextPosition() {
-			return TextPosition;
-		}
-		public void setTextPosition(int textPosition) {
-			TextPosition = textPosition;
-		}
-		public int getRollingType() {
-			return RollingType;
-		}
-		public void setRollingType(int rollingType) {
-			RollingType = rollingType;
-			if (rollingType == 2)//×Ô×óÏòÓÒÒÆ¶¯
-				if (Text != null & !Text.isEmpty())
-					Text = new StringBuffer(Text).reverse().toString();//½«×Ö·û´®µ¹Ğğ
-		}
-		public int getTextPriority() {
-			return TextPriority;
-		}
-		public void setTextPriority(int textPriority) {
-			TextPriority = textPriority;
-		}
-		public int getHead_x() {
-			return head_x;
-		}
-		public void setHead_x(int head_x) {
-			this.head_x = head_x;
-		}
-		public int getHead_y() {
-			return head_y;
-		}
-		public void setHead_y(int head_y) {
-			this.head_y = head_y;
-		}
-		public String getText() {
-			return Text;
-		}
-		public void setText(String text) {
-			this.Text = text;
-		}
-		/**
-		 * »ñÈ¡textµÄ³¤¶ÈºÍ¸ß¶È
-		 * */
-		private void getTextSize(){
-			Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
-			paint.setTextSize(TextFont);
-			text_length = (int) paint.measureText(Text);//»ñÈ¡×Ü³¤
-			Paint.FontMetrics fontMetrics = paint.getFontMetrics();
-			text_heigh = (int) (fontMetrics.ascent + fontMetrics.leading + fontMetrics.descent);//»ñÈ¡×ÖÌå¸ß¶È
-		}
-		
-	}
-	
 }

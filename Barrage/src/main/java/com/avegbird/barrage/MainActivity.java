@@ -22,7 +22,7 @@ public class MainActivity extends Activity {
 		new Thread(new Runnable(){
 			@Override
 			public void run() {
-				BarrageSurfaceView.MyDrawThread randertherad = myBarrage.getRanderTherad();
+				MyDrawThread randertherad = myBarrage.getRanderTherad();
 				while (true) {
 					if (randertherad != null) {
 						try {
