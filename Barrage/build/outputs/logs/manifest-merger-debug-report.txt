@@ -34,7 +34,7 @@ ADDED from /Users/wangjunfu/AndroidStudioProjects/android/Barrage/src/main/Andro
 	android:icon
 		ADDED from /Users/wangjunfu/AndroidStudioProjects/android/Barrage/src/main/AndroidManifest.xml:13:9-45
 	android:theme
-		ADDED from /Users/wangjunfu/AndroidStudioProjects/android/Barrage/src/main/AndroidManifest.xml:15:9-40
+		ADDED from /Users/wangjunfu/AndroidStudioProjects/android/Barrage/src/main/AndroidManifest.xml:15:9-67
 activity#com.avegbird.barrage.MainActivity
 ADDED from /Users/wangjunfu/AndroidStudioProjects/android/Barrage/src/main/AndroidManifest.xml:16:9-24:20
 	android:label

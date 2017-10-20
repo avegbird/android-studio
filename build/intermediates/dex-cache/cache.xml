@@ -16,7 +16,7 @@
         jumboMode="true"
         optimize="true"
         revision="26.0.1"
-        sha1="09ceac305f05843b66a17f48365d59960f2e7dfa">
+        sha1="ea58b91c819ab6de9833a467c3d873ab7967cf6b">
         <dex dex="/Users/wangjunfu/AndroidStudioProjects/android/Barrage/build/intermediates/transforms/dex/debug/folders/1000/10000/instant-run-bootstrap_c13ba29aff2fcb6476b79dba22da0c5fb6a257cb/classes.dex" />
     </item>
 
