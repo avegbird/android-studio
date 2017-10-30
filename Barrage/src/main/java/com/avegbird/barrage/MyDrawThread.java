@@ -23,6 +23,7 @@ public class MyDrawThread extends Thread{
 
     private boolean is_run = true;//控制此绘图线程是否存活，又称软退出
     private int showType = 1;//弹幕渲染规则，1弹幕不覆盖显示，2弹幕覆盖显示
+    private RoadRules myrules;//控制弹幕行
 
     private int[][] is_clean = null; //保存渲染行信息，①决定第N行的弹幕是否可继续渲染其他弹幕；②保存渲染行高度
     private int width = 0;//屏幕宽度
@@ -49,6 +50,7 @@ public class MyDrawThread extends Thread{
         this.heigth = height;
         this.speed = speed;
         Log.e(TAG,"width="+width+" heigth="+height);
+        myrules = new RoadRules(width,height);
     }
     /**
      * 线程必须要实现的方法
@@ -62,6 +64,8 @@ public class MyDrawThread extends Thread{
         if (D) Log.e(TAG,"draw thread is run");
         while(is_run) {
             long use_time = System.currentTimeMillis() - last_time;
+            if (use_time > 100)
+                Log.e(TAG,"used time="+use_time);
             if (1000/MaxFrame - use_time > 0)//保证最大帧率
                 try {
                     Thread.sleep((1000/MaxFrame - use_time));
@@ -73,12 +77,13 @@ public class MyDrawThread extends Thread{
                 continue;//如果holder为空，则一直等待
             }
             if (taxtThemes == null || taxtThemes.size() < 1) {
+                Log.e(TAG,"taxtThemes is null");
                 continue;//如果所有弹幕已经绘制完成，等待新的弹幕进入
             }
             synchronized (holder) {
                 Canvas lockCanvas = holder.lockCanvas();//获取surfaceview canvas
                 if (lockCanvas == null)
-                    break;
+                    continue;
                 lockCanvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR);//清空画布
                 draw_cache_Canvas(lockCanvas,paint,use_time);//绘制弹幕到画布
                 draw_per_frame(lockCanvas,paint,use_time);//绘制帧率到画布
@@ -107,18 +112,38 @@ public class MyDrawThread extends Thread{
      * */
     private void draw_cache_Canvas(Canvas canvas, Paint paint,long use_time) {
         synchronized (taxtThemes) {//保证只有此方法单独操作所有弹幕
+            MyPoint point = null;
+            //循环取得单个taxt对象
             for(TaxtTheme i : taxtThemes) {
                 if (i.is_destroy()){//是否弹幕已经失效
                     taxtThemes.remove(i);
                     i = null;
                     continue;
                 }
-                //循环取得单个taxt对象
                 paint.setAlpha((int)(255*i.getTextApth()));//向画笔设置透明度
                 paint.setTextSize(i.getTextFont());//设置字体
                 paint.setColor(i.getTextColor());//设置颜色
+                long k = System.currentTimeMillis();
+                if (i.need_to_init()){//如果弹幕需要被初始化，初始化其行高
+                    //获取当前弹幕可以所在的行
+                    point = myrules.auto_get_set(i.getText_heigh());
+                    if (point != null){
+                        //获取到了可以渲染的行
+                        int head_y = point.getHead_y();
+                        if (head_y > 0){
+                            i.setHead_y(head_y);
+                            i.setX_line(point.getLine_x());
+                        }
+                    }else{
+                        Log.e(TAG,"there have no size to put barrage");
+                        continue;
+                    }
+                }
+                int tail = i.goMove(width,heigth,speed,use_time);//弹幕移动
                 canvas.drawText(i.getText(),i.getHead_x(),i.getHead_y(),paint);//绘制弹幕
-                i.goMove(width,heigth,speed,use_time);//弹幕移动
+                //重置每行弹幕是否可以继续添加
+                myrules.set_xline_tail(tail,i.getX_line(),i.getRollingType(),i);
+                point = null;
             }
         }
         return;
@@ -129,6 +154,8 @@ public class MyDrawThread extends Thread{
     public void setBarrage(String text) {
         if (taxtThemes == null)
             taxtThemes = new CopyOnWriteArrayList<TaxtTheme>();
+        if (taxtThemes.size() > 100)//如果输入弹幕过于频繁，应当存在另一个地方，不参加循环
+            return;
         synchronized(taxtThemes){
             taxtThemes.add(new TaxtTheme(text).setRollingType(2));
         }

@@ -31,6 +31,8 @@ public class TaxtTheme {
     private int head_y;//此条弹幕当前头Y位置
     private int text_length = 0;//弹幕长度
     private int text_heigh = 0;//弹幕高度
+    private int x_line = -1;//所属行
+    private int y_line = -1;//所属列
 
     public TaxtTheme(String text) {
         if (text == null){
@@ -40,7 +42,17 @@ public class TaxtTheme {
         }
         getTextSize();
         head_x = Integer.MAX_VALUE;
-        head_y = text_heigh + 200;
+        head_y = text_heigh;
+    }
+    /**
+     * 弹幕是否已经被加载到界面且没有被销毁
+     * */
+    public boolean need_to_init(){
+        if (is_destroy)
+            return false;
+        if (this.head_x == Integer.MAX_VALUE)
+            return true;
+        return false;
     }
     public int getTextFont() {
         return TextFont;
@@ -51,7 +63,15 @@ public class TaxtTheme {
         TextFont = textFont;
         getTextSize();
     }
-    public void goMove(int width,int heigth, int speed,long use_time){
+    /**
+     * 弹幕移动，设置弹幕headx参数
+     * @param heigth 屏幕高度
+     * @param width 屏幕宽度
+     * @param speed 弹幕速度
+     * @param use_time 刷新一次间隔时间
+     * @return int tail 弹幕尾
+     * */
+    public int goMove(int width,int heigth, int speed,long use_time){
         int move = (int) ((width+text_length)/(speed*1000.0/use_time));
         switch (RollingType){
             case 0: //不滚动
@@ -60,43 +80,41 @@ public class TaxtTheme {
                     head_x = (width - text_length)/2;
                 if (System.currentTimeMillis() - now_time >= TextStayTime){
                     toDestroy();
-                    break;
+                    return -1;//返回弹幕尾
                 }
                 break;
             case 1: //正常自右向左滚动
                 if (head_x == Integer.MAX_VALUE){
                     head_x = width;
-                    Log.e(TAG,"head_x set to width"+head_x);
                 }
                 //查看是否可见
                 if (head_x + text_length <= 0){
-                    Log.e(TAG,"textTheme destroy");
                     toDestroy();
-                    break;
+                    return Integer.MIN_VALUE+width;//返回弹幕尾
                 }
                 head_x = head_x - (move>1?move:1);
-                Log.e(TAG, "gomove="+head_x);
-                break;
+                return head_x + text_length;
             case 2: //自左往右滚动
                 //查看是否可见
                 if (head_x == Integer.MAX_VALUE){
                     head_x = 0 - text_length;
-                    Log.e(TAG,"head_x set to zero"+head_x);
                 }
                 if (head_x - text_length >= width){
                     toDestroy();
-                    Log.e(TAG,"textTheme destroy");
-                    break;
+                    return Integer.MAX_VALUE-width;//返回弹幕尾
                 }
                 head_x = head_x + (move>1?move:1);
-                break;
+                return head_x - text_length;//返回尾坐标
             default:
 
         }
+        return 0;
     }
     public void toDestroy(){
         is_destroy = true;
         now_time = 0;
+        x_line = -1;
+        y_line = -1;
 //			这里以后可以为重复利用做准备
     }
     public boolean is_destroy(){return is_destroy;}
@@ -166,6 +184,31 @@ public class TaxtTheme {
         this.Text = text;
         return this;
     }
+
+    public int getText_length() {
+        return text_length;
+    }
+
+    public int getText_heigh() {
+        return text_heigh;
+    }
+
+    public int getX_line() {
+        return x_line;
+    }
+
+    public void setX_line(int x_line) {
+        this.x_line = x_line;
+    }
+
+    public int getY_line() {
+        return y_line;
+    }
+
+    public void setY_line(int y_line) {
+        this.y_line = y_line;
+    }
+
     /**
      * 获取text的长度和高度
      * */
@@ -175,6 +218,19 @@ public class TaxtTheme {
         text_length = (int) paint.measureText(Text);//获取总长
         Paint.FontMetrics fontMetrics = paint.getFontMetrics();
         text_heigh = (int) (fontMetrics.ascent + fontMetrics.leading + fontMetrics.descent);//获取字体高度
+        text_heigh = Math.abs(text_heigh);
+        text_length = Math.abs(text_length);
     }
 
+    public int get_tail() {
+        switch (RollingType) {
+            case 1: //正常自右向左滚动
+                return head_x + text_length;
+            case 2: //自左往右滚动
+                //查看是否可见
+                return head_x - text_length;//返回尾坐标
+            default:
+                return -1;
+        }
+    }
 }

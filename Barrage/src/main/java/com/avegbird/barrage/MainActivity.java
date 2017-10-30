@@ -26,9 +26,8 @@ public class MainActivity extends Activity {
 				while (true) {
 					if (randertherad != null) {
 						try {
-							Log.e("MainActivity", "set Barrage");
 							randertherad.setBarrage("" + System.currentTimeMillis());
-							Thread.sleep(1000);
+							Thread.sleep(100);
 						} catch (InterruptedException e) {
 							e.printStackTrace();
 						}

@@ -6,19 +6,19 @@
     density="xxhdpi"
     format="10"
     plugin-version="2.3.3"
-    timestamp="1508492945859"
+    timestamp="1509347312294"
     token="-5870305336323945998"
     verifier="COLD_SWAP_REQUESTED" >
 
     <task
         name="javac"
-        duration="101" />
+        duration="65" />
     <task
         name="instant-run-dex"
         duration="0" />
     <task
         name="instant-run-transform"
-        duration="9" />
+        duration="7" />
     <task
         name="verifier"
         duration="1" />
@@ -32,7 +32,7 @@
 
     <build
         build-mode="FULL"
-        timestamp="1508489780092"
+        timestamp="1509340705431"
         verifier="FULL_BUILD_REQUESTED" >
         <artifact
             location="/Users/wangjunfu/AndroidStudioProjects/android/Barrage/build/intermediates/split-apk/debug/slices/slice_8.apk"
@@ -70,7 +70,7 @@
     </build>
     <build
         build-mode="COLD"
-        timestamp="1508492909025"
+        timestamp="1509347126464"
         verifier="COLD_SWAP_REQUESTED" >
         <artifact
             location="/Users/wangjunfu/AndroidStudioProjects/android/Barrage/build/outputs/apk/Barrage-debug.apk"
@@ -78,7 +78,7 @@
     </build>
     <build
         build-mode="COLD"
-        timestamp="1508492945859"
+        timestamp="1509347312294"
         verifier="COLD_SWAP_REQUESTED" >
         <artifact
             location="/Users/wangjunfu/AndroidStudioProjects/android/Barrage/build/intermediates/split-apk/debug/slices/slice_8.apk"
