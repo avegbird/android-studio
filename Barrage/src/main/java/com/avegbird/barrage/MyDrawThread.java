@@ -157,7 +157,7 @@ public class MyDrawThread extends Thread{
         if (taxtThemes.size() > 100)//如果输入弹幕过于频繁，应当存在另一个地方，不参加循环
             return;
         synchronized(taxtThemes){
-            taxtThemes.add(new TaxtTheme(text).setRollingType(2));
+            taxtThemes.add(new TaxtTheme(text));
         }
     }
 

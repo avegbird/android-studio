@@ -2,11 +2,13 @@ package com.avegbird.barrage;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
 public class MainActivity extends Activity {
+	int Max_D = 1000;
 	private BarrageSurfaceView myBarrage;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -27,7 +29,10 @@ public class MainActivity extends Activity {
 					if (randertherad != null) {
 						try {
 							randertherad.setBarrage("" + System.currentTimeMillis());
-							Thread.sleep(100);
+							long delay = (long) (Math.random()*Max_D);
+							if (delay < Max_D/3)
+								delay = (long) (Math.random()*100);
+							Thread.sleep(delay);
 						} catch (InterruptedException e) {
 							e.printStackTrace();
 						}
